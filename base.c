@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 
 //4大类型：基本类型 构造类型 指针类型 空类型(void专用于表示函数不返回值)
@@ -81,10 +83,11 @@ void chapter1_type_convert() {
 void chapter1_complex_type() {
     struct student
     {
+        int score;
         char sex;
         char c, d, e, f;
-        int score;
     } s1, sarr[100];
+
     printf("SIZE OF STRUCT:%lu SIZE OF STRUCT ARRAY:%lu\n", sizeof(s1), sizeof(sarr));
     s1.sex = 'm';
     s1.score = 0;
@@ -195,6 +198,77 @@ void chapter3_array() {
 
     printf("sizeof int[5]=%lu, sizeof int[2][2]=%lu, sizeof pointer->aaa2=%lu\n",
             sizeof(aaa1), sizeof(aaa2), sizeof(p));
+
+    //注意，字符串类型变量，要多定义一个字节，用于存放结尾的0
+    //char name[1000][10+1];
+
+    char lfj1[10] = "abc";
+    char lfj2[10] = "def";
+    char fjg[20];
+
+    //strcpy拷贝, strcat连接，用这两个函数把s1和s2连起来，放到ss中
+    strcpy(fjg,lfj1);
+    strcat(fjg,lfj2);
+    printf("%s\n",fjg);
+
+    //简单方法！
+    sprintf(fjg, "%s--lfj--%s", lfj1, lfj2);
+    printf("%s\n",fjg);
+
+    //解决sprintf的越界问题，snprintf可以指定最大长度，就不会越界造成程序crash了
+    snprintf(fjg, sizeof(fjg)-1, "%s--lfj--%s", lfj1, lfj2);
+
+    //strtok可以按delim指定的分割符把一个字符串切开，但有个坏处，就是会破坏原来的字符串
+    char fenges[64] = "zhangsan,100-99;45 66";
+    char delim[5]=",-; ";
+    char *pf;
+    printf("before strtok fenges=%s\n", fenges);
+    pf = strtok(fenges, delim);
+    while(pf) {
+        printf("%s\n", pf);
+        pf = strtok(NULL, delim);
+    }
+    printf("after strtok fenges=%s\n", fenges);
+}
+
+struct sta {
+    char a;
+    int b;
+};
+
+//c语言里内存有几种存储区域：堆，栈，全局存储区，静态存储区，常量存储区
+struct sta global_instance; //全局变量，名字不能重复，存在全局存储区
+
+void chapter4_function_trans(int a, int *b, int *c, struct sta s1, struct sta *s2) {
+    a+=10;
+    (*b)+=10;
+    c[0]+=10;
+    *(c+0) += 10;
+
+    //值传递...在复制出来的副本上操作，不影响原本
+    s1.a+=1;
+    s1.b+=1;
+
+    //地址传递...直接在原本上操作
+    s2->a+=1; //(*s2).a
+    s2->b+=1;
+}
+
+char *chapter4_function() {
+    int x=1, y=2; //函数内部定义的临时变量，叫做栈，函数退出后，会自动释放，函数内不能重名
+    int z[3] = {1,2,3};
+    struct sta ss1 = {'A', 10};
+    struct sta ss2 = {'A', 10};
+
+    static int static_a = 10;
+
+    static_a+=10;
+
+    chapter4_function_trans(x, &y, z, ss1, &ss2);
+    printf("after function x=%d y=%d z[0]=%d ss1.a=%c ss2.a=%c\n", x, y, z[0], ss1.a, ss2.a);
+
+    char *dui = (char *)malloc(40); //动态分配的内存，位于堆
+    return dui;
 }
 
 int main()
@@ -205,4 +279,5 @@ int main()
     chapter1_complex_type();
     chapter2_control_flow();
     chapter3_array();
+    chapter4_function();
 }
