@@ -6,10 +6,14 @@
 //预处理之宏定义，这个是在预处理阶段执行的，原理很简单，对源码进行字符串替换
 #define _PRINT_SEP_LINE_  printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
 
+void chapter1_helloworld() {
+    printf("Hello, world!\n");
+}
+
 //4大类型：基本类型 构造类型 指针类型 空类型(void专用于表示函数不返回值)
 //各种基本类型变量定义
 //常量写法，输出格式串写法
-void chapter1_basic_type() {
+void chapter2_basic_type() {
     _PRINT_SEP_LINE_
     int a = 1000000;
 
@@ -39,7 +43,7 @@ void chapter1_basic_type() {
 
 //打印各种基本类型占的字节数
 //注意不同的电脑架构，长度不一定一样
-void chapter1_type_size() {
+void chapter2_type_size() {
     _PRINT_SEP_LINE_
     char c1;
     short sh1;
@@ -60,7 +64,7 @@ void chapter1_type_size() {
 }
 
 //c语言里面各种变量可以互相强行转换，但结果可能有损失
-void chapter1_type_convert() {
+void chapter2_type_convert() {
     _PRINT_SEP_LINE_
     int a;
     float f = 3.6;
@@ -87,68 +91,7 @@ void chapter1_type_convert() {
     }
 }
 
-//组合类型之结构
-void chapter1_complex_type() {
-    _PRINT_SEP_LINE_
-    struct student
-    {
-        int score;
-        char sex;
-        char c, d, e, f;
-    } s1, sarr[100];
-
-    printf("SIZE OF STRUCT:%lu SIZE OF STRUCT ARRAY:%lu\n", sizeof(s1), sizeof(sarr));
-    s1.sex = 'm';
-    s1.score = 0;
-    printf("%c %d\n", s1.sex, s1.score);
-
-    /*
-    | c |   | s | s |
-    | i | i | i | i |
-    */
-    struct st1 {
-        char a;
-        short b;
-        int c;
-    } ss1;
-
-    /*
-    | c |   |   |   |
-    | i | i | i | i |
-    | s | s |   |   |
-    */
-    struct st2 {
-        char a;
-        int c;
-        short b;
-    } ss2;
-
-    //缺省结构体按4字节对齐，但可以用如下语句指定按1对齐
-    //#pragma pack(1)
-    //内存对齐是为了cpu快速读取一个变量，cpu读数据一般不是1个字节一个字节读，
-    //而是4个字节倍数的块读，所以如果不对齐，可能要两次或者更多
-    //上面那两个结构体，类型顺序变了，导致占用的内存是不同的
-    printf("sizeof(st1)=%lu sizeof(st2)=%lu\n", sizeof(ss1), sizeof(ss2));
-
-    struct st2 *p1 = &ss2, *p2 = &ss2;
-    p2++;
-    printf("p2-p1=%ld, addr~p2-addr~p1=%ld\n", p2-p1, (long)p2-(long)p1);
-
-    //注意union各个字段的内存是共用的，这样就给访问同一段内存，提供了
-    //不同的访问方式，例如下面例子里，这个联合会占4字节，然后可以用
-    //ui按整数访问，又可以按us按字节访问
-    union uu {
-        unsigned int ui;
-        struct c4i {
-            unsigned char a, b, c, d;
-        } us;
-    } u;
-
-    u.ui = 0xFFFFFFFF;
-    printf("us.a=%x us.b=%x us.c=%x us.d=%x\n", u.us.a, u.us.b, u.us.c, u.us.d);
-}
-
-void chapter2_control_flow() {
+void chapter3_control_flow() {
     _PRINT_SEP_LINE_
     int i = 8;
     int j = 0;
@@ -196,7 +139,7 @@ void chapter2_control_flow() {
     }
 }
 
-void chapter3_array() {
+void chapter4_array() {
     _PRINT_SEP_LINE_
     //数组的初始化
     int aaa1[5] = {1,2,3,4,5};
@@ -263,7 +206,7 @@ struct sta {
 //c语言里内存有几种存储区域：堆，栈，全局存储区，静态存储区，常量存储区
 struct sta global_instance; //全局变量，名字不能重复，存在全局存储区
 
-void chapter4_function_trans(int a, int *b, int *c, struct sta s1, struct sta *s2) {
+void chapter5and6_function_trans(int a, int *b, int *c, struct sta s1, struct sta *s2) {
     _PRINT_SEP_LINE_
     a+=10;
     (*b)+=10;
@@ -279,7 +222,7 @@ void chapter4_function_trans(int a, int *b, int *c, struct sta s1, struct sta *s
     s2->b+=1;
 }
 
-char *chapter4_function() {
+char *chapter5and6_function() {
     _PRINT_SEP_LINE_
     int x=1, y=2; //函数内部定义的临时变量，叫做栈，函数退出后，会自动释放，函数内不能重名
     int z[3] = {1,2,3};
@@ -291,23 +234,93 @@ char *chapter4_function() {
     static_a+=10;
     printf("static a=%d\n", static_a);
 
-    chapter4_function_trans(x, &y, z, ss1, &ss2);
+    chapter5and6_function_trans(x, &y, z, ss1, &ss2);
     printf("after function x=%d y=%d z[0]=%d ss1.a=%c ss2.a=%c\n", x, y, z[0], ss1.a, ss2.a);
 
     char *dui = (char *)malloc(40); //动态分配的内存，位于堆
     return dui;
 }
 
+//组合类型之结构
+void chapter7_complex_type() {
+    _PRINT_SEP_LINE_
+    struct student
+    {
+        int score;
+        char sex;
+        char c, d, e, f;
+    } s1, sarr[100];
+
+    printf("SIZE OF STRUCT:%lu SIZE OF STRUCT ARRAY:%lu\n", sizeof(s1), sizeof(sarr));
+    s1.sex = 'm';
+    s1.score = 0;
+    printf("%c %d\n", s1.sex, s1.score);
+
+    /*
+    | c |   | s | s |
+    | i | i | i | i |
+    */
+    struct st1 {
+        char a;
+        short b;
+        int c;
+    } ss1;
+
+    /*
+    | c |   |   |   |
+    | i | i | i | i |
+    | s | s |   |   |
+    */
+    struct st2 {
+        char a;
+        int c;
+        short b;
+    } ss2;
+
+    //缺省结构体按4字节对齐，但可以用如下语句指定按1对齐
+    //#pragma pack(1)
+    //内存对齐是为了cpu快速读取一个变量，cpu读数据一般不是1个字节一个字节读，
+    //而是4个字节倍数的块读，所以如果不对齐，可能要两次或者更多
+    //上面那两个结构体，类型顺序变了，导致占用的内存是不同的
+    printf("sizeof(st1)=%lu sizeof(st2)=%lu\n", sizeof(ss1), sizeof(ss2));
+
+    struct st2 *p1 = &ss2, *p2 = &ss2;
+    p2++;
+    printf("p2-p1=%ld, addr~p2-addr~p1=%ld\n", p2-p1, (long)p2-(long)p1);
+
+    //注意union各个字段的内存是共用的，这样就给访问同一段内存，提供了
+    //不同的访问方式，例如下面例子里，这个联合会占4字节，然后可以用
+    //ui按整数访问，又可以按us按字节访问
+    union uu {
+        unsigned int ui;
+        struct c4i {
+            unsigned char a, b, c, d;
+        } us;
+    } u;
+
+    u.ui = 0xFFFFFFFF;
+    printf("us.a=%x us.b=%x us.c=%x us.d=%x\n", u.us.a, u.us.b, u.us.c, u.us.d);
+}
+
+void chapter8_enum_bit_typedef() {
+}
+
+void chapter9_preprocess() {
+}
+
+void chapter10_file() {
+}
 
 int main()
 {
-    chapter1_type_size();
-    chapter1_basic_type();
-    chapter1_type_convert();
-    chapter1_complex_type();
-    chapter2_control_flow();
-    chapter3_array();
-    chapter4_function();
+    chapter1_helloworld();
+    chapter2_type_size();
+    chapter2_basic_type();
+    chapter2_type_convert();
+    chapter3_control_flow();
+    chapter4_array();
+    chapter5and6_function();
     //再次调用，观察static变量static_a的值
-    chapter4_function();
+    chapter5and6_function();
+    chapter7_complex_type();
 }

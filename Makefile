@@ -1,6 +1,6 @@
 base: base.o
-	gcc -o base base.o
+	gcc -Wall -o base base.o
 base.o: base.c
-	gcc -c base.c
+	gcc -Wall -c base.c
 clean:
 	rm -f base.o base
