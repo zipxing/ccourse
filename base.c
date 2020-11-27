@@ -3,10 +3,14 @@
 #include <stdlib.h>
 
 
+//预处理之宏定义，这个是在预处理阶段执行的，原理很简单，对源码进行字符串替换
+#define _PRINT_SEP_LINE_  printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+
 //4大类型：基本类型 构造类型 指针类型 空类型(void专用于表示函数不返回值)
 //各种基本类型变量定义
 //常量写法，输出格式串写法
 void chapter1_basic_type() {
+    _PRINT_SEP_LINE_
     int a = 1000000;
 
     a = 0x1000; //十六进制常量
@@ -36,14 +40,15 @@ void chapter1_basic_type() {
 //打印各种基本类型占的字节数
 //注意不同的电脑架构，长度不一定一样
 void chapter1_type_size() {
+    _PRINT_SEP_LINE_
     char c1;
     short sh1;
     int i1;
     long l1;
-    long long ll1;
+    long long ll1; //8字节
     float f1;
     double d1;
-    long double d2;
+    long double d2; //16字节
 
     printf("CHAR(%lu) SHORT(%lu) INT(%lu) LONG(%lu) LONGLONG(%lu) FLOAT(%lu) DOUBLE(%lu) LONGDOUBLE(%lu)\n\n",
     sizeof(c1), sizeof(sh1), sizeof(i1), sizeof(l1), sizeof(ll1), sizeof(f1), sizeof(d1), sizeof(d2));
@@ -54,8 +59,9 @@ void chapter1_type_size() {
     printf("sizeof(p1)=%lu sizeof(p2)=%lu\n", sizeof(p1), sizeof(p2));
 }
 
-//c语言里面各种变量可以互相强行转换，但不保证结果正确
+//c语言里面各种变量可以互相强行转换，但结果可能有损失
 void chapter1_type_convert() {
+    _PRINT_SEP_LINE_
     int a;
     float f = 3.6;
 
@@ -69,6 +75,8 @@ void chapter1_type_convert() {
     //另外就是让编译器不发出警告
     double d = 8.0;
     a = (char)d;
+
+    //用一个char指针，指向一个8字节的double变量，然后打印这8个字节都是什么值
     char *p;
     p = (char *)&d;
     int count = (sizeof(double) / sizeof(*p));
@@ -81,6 +89,7 @@ void chapter1_type_convert() {
 
 //组合类型之结构
 void chapter1_complex_type() {
+    _PRINT_SEP_LINE_
     struct student
     {
         int score;
@@ -124,9 +133,23 @@ void chapter1_complex_type() {
     struct st2 *p1 = &ss2, *p2 = &ss2;
     p2++;
     printf("p2-p1=%ld, addr~p2-addr~p1=%ld\n", p2-p1, (long)p2-(long)p1);
+
+    //注意union各个字段的内存是共用的，这样就给访问同一段内存，提供了
+    //不同的访问方式，例如下面例子里，这个联合会占4字节，然后可以用
+    //ui按整数访问，又可以按us按字节访问
+    union uu {
+        unsigned int ui;
+        struct c4i {
+            unsigned char a, b, c, d;
+        } us;
+    } u;
+
+    u.ui = 0xFFFFFFFF;
+    printf("us.a=%x us.b=%x us.c=%x us.d=%x\n", u.us.a, u.us.b, u.us.c, u.us.d);
 }
 
 void chapter2_control_flow() {
+    _PRINT_SEP_LINE_
     int i = 8;
     int j = 0;
 
@@ -174,6 +197,7 @@ void chapter2_control_flow() {
 }
 
 void chapter3_array() {
+    _PRINT_SEP_LINE_
     //数组的初始化
     int aaa1[5] = {1,2,3,4,5};
     int aaa2[2][2] = {{1,2}, {3,4}};
@@ -240,6 +264,7 @@ struct sta {
 struct sta global_instance; //全局变量，名字不能重复，存在全局存储区
 
 void chapter4_function_trans(int a, int *b, int *c, struct sta s1, struct sta *s2) {
+    _PRINT_SEP_LINE_
     a+=10;
     (*b)+=10;
     c[0]+=10;
@@ -255,6 +280,7 @@ void chapter4_function_trans(int a, int *b, int *c, struct sta s1, struct sta *s
 }
 
 char *chapter4_function() {
+    _PRINT_SEP_LINE_
     int x=1, y=2; //函数内部定义的临时变量，叫做栈，函数退出后，会自动释放，函数内不能重名
     int z[3] = {1,2,3};
     struct sta ss1 = {'A', 10};
@@ -263,6 +289,7 @@ char *chapter4_function() {
     static int static_a = 10;
 
     static_a+=10;
+    printf("static a=%d\n", static_a);
 
     chapter4_function_trans(x, &y, z, ss1, &ss2);
     printf("after function x=%d y=%d z[0]=%d ss1.a=%c ss2.a=%c\n", x, y, z[0], ss1.a, ss2.a);
@@ -270,6 +297,7 @@ char *chapter4_function() {
     char *dui = (char *)malloc(40); //动态分配的内存，位于堆
     return dui;
 }
+
 
 int main()
 {
@@ -279,5 +307,7 @@ int main()
     chapter1_complex_type();
     chapter2_control_flow();
     chapter3_array();
+    chapter4_function();
+    //再次调用，观察static变量static_a的值
     chapter4_function();
 }
