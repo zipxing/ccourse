@@ -329,6 +329,8 @@ void chapter8_enum_bit_typedef() {
     printf("union bitfield hi=%X lo=%X\n", b.bv.hi, b.bv.lo);
 }
 
+//预处理的原理要理解清楚，是在编译之前，对源代码进行处理
+//
 #define DEBUG 1
 void chapter9_preprocess() {
     _PRINT_SEP_LINE_
