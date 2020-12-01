@@ -302,6 +302,7 @@ void chapter7_complex_type() {
     printf("us.a=%x us.b=%x us.c=%x us.d=%x\n", u.us.a, u.us.b, u.us.c, u.us.d);
 }
 
+//枚举，位联合，类型定义...
 void chapter8_enum_bit_typedef() {
     _PRINT_SEP_LINE_
     enum COLOR { 
@@ -312,6 +313,9 @@ void chapter8_enum_bit_typedef() {
     c = GREEN;
     printf("COLOR GREEN=%d\n", c);
 
+    //一个字节value，提供hi,lo两个按位访问的方式
+    //联合的本质是共享内存空间
+    //给联合定义了一个方便使用的名字BitField
     typedef union _bf {
         unsigned char value;
         struct {
@@ -339,6 +343,7 @@ void chapter9_preprocess() {
 #endif
 }
 
+//文件读写...
 void chapter10_file() {
     _PRINT_SEP_LINE_
     //以写入创建方式打开test.txt...
@@ -374,29 +379,23 @@ void chapter10_file() {
     sprintf(s1.loc, "BEIJING");
     sprintf(s1.name, "ZHOUXIN");
 
-    //以二进制写入创建方式打开student.dat...
+    //以二进制读写创建方式打开student.dat...
     fp = fopen("student.dat", "wb+");
     if(fp) {
         //如果打开成功，把两个结构写入文件...
         fwrite(&s1, sizeof(STUDENT), 1, fp);
         fwrite(&s2, sizeof(STUDENT), 1, fp);
+        //从文件头开始，跳过第一个结构体...
+        //SEEK_SET表示文件开头，SEEK_END表示文件尾，SEEK_CUR表示当前位置
+        fseek(fp, sizeof(STUDENT), SEEK_SET);
+        //把第二个结构体读入到s3里
+        fread(&s3, sizeof(STUDENT), 1, fp);
+        //打印确认是否正确到从文件里读入了一个结构体
+        printf("read from student.dat s3.name=%s\n", s3.name);
         fclose(fp);
     } else {
         printf("Open file student.dat error!\n");
     }
-    //以二进制读方式打开文件...
-    fp = fopen("student.dat", "rb");
-    if(fp) {
-        //跳过第一个结构体...
-        fseek(fp, sizeof(STUDENT), SEEK_SET);
-        //把第二个结构体读入到s3里
-        fread(&s3, sizeof(STUDENT), 1, fp);
-        fclose(fp);
-    } else { 
-        printf("Open file student.dat error!\n");
-    }
-    //打印确认是否正确到从文件里读入了一个结构体
-    printf("read from student.dat s3.name=%s\n", s3.name);
 }
 
 int main()

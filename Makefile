@@ -1,5 +1,5 @@
 base: base.o
-	gcc -Wall -o base base.o
+	gcc -o base base.o
 base.o: base.c
 	gcc -Wall -c base.c
 clean:
