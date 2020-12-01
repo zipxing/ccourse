@@ -303,12 +303,98 @@ void chapter7_complex_type() {
 }
 
 void chapter8_enum_bit_typedef() {
+    _PRINT_SEP_LINE_
+    enum COLOR { 
+        RED=1,
+        GREEN,
+        BLUE
+    } c;
+    c = GREEN;
+    printf("COLOR GREEN=%d\n", c);
+
+    typedef union _bf {
+        unsigned char value;
+        struct {
+            unsigned char hi:4;
+            unsigned char lo:4;
+        } bv;
+    } BitField;
+
+    BitField a;
+    a.bv.hi = 10;
+    a.bv.lo = 10;
+    printf("union bitfield value=%X\n", a.value);
+    union _bf b;
+    b.value = 0xbb;
+    printf("union bitfield hi=%X lo=%X\n", b.bv.hi, b.bv.lo);
 }
 
+#define DEBUG 1
 void chapter9_preprocess() {
+    _PRINT_SEP_LINE_
+#if DEBUG
+    printf("debug define true!!!\n");
+#endif
 }
 
 void chapter10_file() {
+    _PRINT_SEP_LINE_
+    //以写入创建方式打开test.txt...
+    FILE *fp = fopen("test.txt", "w+");
+    if(fp) {
+        //如果打开成功写入如下文本到test.txt文件中，并关闭文件
+        fprintf(fp, "%s %d\n", "hahaha", 20);
+        fclose(fp);
+    } else {
+        printf("Open file test.txt error!\n");
+    }
+
+    typedef struct _stdudent {
+        char sex;
+        char nianling;
+        unsigned int id;
+        char loc[64];
+        char name[32];
+    } STUDENT;
+
+    STUDENT s1, s2, s3;
+
+    //给两个结构体分别赋值
+    s2.sex = 0; 
+    s2.nianling = 20;
+    s2.id = 1;
+    sprintf(s2.loc, "BEIJING");
+    sprintf(s2.name, "ZHOUXIN");
+
+    s1.sex = 0; 
+    s1.nianling = 20;
+    s1.id = 1;
+    sprintf(s1.loc, "BEIJING");
+    sprintf(s1.name, "ZHOUXIN");
+
+    //以二进制写入创建方式打开student.dat...
+    fp = fopen("student.dat", "wb+");
+    if(fp) {
+        //如果打开成功，把两个结构写入文件...
+        fwrite(&s1, sizeof(STUDENT), 1, fp);
+        fwrite(&s2, sizeof(STUDENT), 1, fp);
+        fclose(fp);
+    } else {
+        printf("Open file student.dat error!\n");
+    }
+    //以二进制读方式打开文件...
+    fp = fopen("student.dat", "rb");
+    if(fp) {
+        //跳过第一个结构体...
+        fseek(fp, sizeof(STUDENT), SEEK_SET);
+        //把第二个结构体读入到s3里
+        fread(&s3, sizeof(STUDENT), 1, fp);
+        fclose(fp);
+    } else { 
+        printf("Open file student.dat error!\n");
+    }
+    //打印确认是否正确到从文件里读入了一个结构体
+    printf("read from student.dat s3.name=%s\n", s3.name);
 }
 
 int main()
@@ -323,4 +409,7 @@ int main()
     //再次调用，观察static变量static_a的值
     chapter5and6_function();
     chapter7_complex_type();
+    chapter8_enum_bit_typedef();
+    chapter9_preprocess();
+    chapter10_file();
 }
