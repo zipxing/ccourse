@@ -3,4 +3,4 @@ base: base.o
 base.o: base.c
 	gcc -Wall -c base.c
 clean:
-	rm -f base.o base
+	rm -f base.o base test.txt student.dat
