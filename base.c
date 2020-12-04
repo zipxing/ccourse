@@ -60,7 +60,7 @@ void chapter2_type_size() {
     char *p1 = &c1;
     double *p2 = &d1;
     //指针表示一个变量的地址，各种指针在64位系统里，都是8字节
-    printf("sizeof(p1)=%lu sizeof(p2)=%lu\n", sizeof(p1), sizeof(p2));
+    printf("sizeof(point p1)=%lu sizeof(point p2)=%lu\n", sizeof(p1), sizeof(p2));
 }
 
 //c语言里面各种变量可以互相强行转换，但结果可能有损失
@@ -174,9 +174,9 @@ void chapter4_array() {
     char fjg[20];
 
     //strcpy拷贝, strcat连接，用这两个函数把s1和s2连起来，放到ss中
-    strcpy(fjg,lfj1);
-    strcat(fjg,lfj2);
-    printf("%s\n",fjg);
+    strcpy(fjg, lfj1);
+    strcat(fjg, lfj2);
+    printf("%s\n", fjg);
 
     //简单方法！
     sprintf(fjg, "%s--lfj--%s", lfj1, lfj2);
@@ -222,6 +222,15 @@ void chapter5and6_function_trans(int a, int *b, int *c, struct sta s1, struct st
     s2->b+=1;
 }
 
+//函数和指针，注意值传递与地址传递的用法，以及几种内存区域
+//代码区：存放程序的代码，即CPU执行的机器指令，并且是只读的。
+//常量区：存放常量(程序运行期间不能够被改变的量，如: 10，”abcde”，数组的名字等)
+//静态区（全局区）：静态和全局变量的存储区域是一起的，静态区内存直到程序全部结束才会被释放
+//堆区：调用malloc()函数来主动申请的，需使用free()函数来释放内存，不释放会泄露
+//栈区：存放函数内的局部变量，形参和函数返回值。栈区之中的数据的作用范围过了之后
+//      系统就会回收自动管理栈区的内存(分配内存 , 回收内存),不需要开发人员来手动
+//      管理。栈区就像是一家客栈，里面有很多房间，客人来了之后自动分配房间，
+//      房间里的客人可以变动，是一种动态的数据变动。
 char *chapter5and6_function() {
     _PRINT_SEP_LINE_
     int x=1, y=2; //函数内部定义的临时变量，叫做栈，函数退出后，会自动释放，函数内不能重名
@@ -231,9 +240,12 @@ char *chapter5and6_function() {
 
     static int static_a = 10;
 
+    //静态变量放在静态区，退出函数后仍然有效，直到退出程序才释放
     static_a+=10;
     printf("static a=%d\n", static_a);
 
+    //x是值传递，复制了一份
+    //y是地址传递，复制了个指针，但实际内容指向的是一份
     chapter5and6_function_trans(x, &y, z, ss1, &ss2);
     printf("after function x=%d y=%d z[0]=%d ss1.a=%c ss2.a=%c\n", x, y, z[0], ss1.a, ss2.a);
 
@@ -330,6 +342,7 @@ void chapter8_enum_bit_typedef() {
     printf("union bitfield value=%X\n", a.value);
     union _bf b;
     b.value = 0xbb;
+    b.value ^= 0xFF;
     printf("union bitfield hi=%X lo=%X\n", b.bv.hi, b.bv.lo);
 }
 
@@ -395,6 +408,22 @@ void chapter10_file() {
         fclose(fp);
     } else {
         printf("Open file student.dat error!\n");
+    }
+    //读取一个excel导出的csv文件,其实是以逗号分割字段的文本
+    fp = fopen("score.csv", "r");
+    char f1[32], f2[32], f3[32], f4[32], f5[32];
+    int sc1, sc2, sc3, sc4;
+    if(fp) {
+        while(1) {
+            //scanf的返回值，是实际读取的数据个数，注意读取到逗号的写法
+            int ret = fscanf(fp, "%[^,],%[^,],%[^,],%[^,],%s", f1,f2,f3,f4,f5);
+            if(ret!=5) break;
+            sc1 = atoi(f2);
+            sc2 = atoi(f3);
+            sc3 = atoi(f4);
+            sc4 = atoi(f5);
+            printf("%d %d %d %d\n", sc1,sc2,sc3,sc4);
+        }
     }
 }
 
