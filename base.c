@@ -427,8 +427,24 @@ void chapter10_file() {
     }
 }
 
-int main()
+#include "multi.h"
+void multi_file() {
+    printf("global_count in multi.c = %d\n", global_count);
+    inc_global_count(2000);
+    printf("global_count in multi.c = %d\n", global_count);
+}
+
+int main(int argc, char *argv[])
 {
+    //命令行参数用法说明，命令行参数也就是主函数的参数
+    //执行程序的时候，后面可以跟很多参数，表示不同的选项
+    //可以用主函数的一个整形，一个字符串数组来表示
+    printf("argc=%d\n", argc);
+    if(argc>=2) {
+        for(int i=0; i<argc; i++)
+            printf("argv-%d = %s\n", i, argv[i]);
+    }
+
     chapter1_helloworld();
     chapter2_type_size();
     chapter2_basic_type();
@@ -442,4 +458,5 @@ int main()
     chapter8_enum_bit_typedef();
     chapter9_preprocess();
     chapter10_file();
+    multi_file();
 }
