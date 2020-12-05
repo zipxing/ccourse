@@ -380,13 +380,13 @@ void chapter10_file() {
     STUDENT s1, s2, s3;
 
     //给两个结构体分别赋值
-    s2.sex = 0; 
+    s2.sex = 0;
     s2.nianling = 20;
     s2.id = 1;
     sprintf(s2.loc, "BEIJING");
     sprintf(s2.name, "ZHOUXIN");
 
-    s1.sex = 0; 
+    s1.sex = 0;
     s1.nianling = 20;
     s1.id = 1;
     sprintf(s1.loc, "BEIJING");
