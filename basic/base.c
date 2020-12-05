@@ -317,13 +317,17 @@ void chapter7_complex_type() {
 //枚举，位联合，类型定义...
 void chapter8_enum_bit_typedef() {
     _PRINT_SEP_LINE_
+    //enum的目的是为了提高代码可读性...
     enum COLOR { 
-        RED=1,
+        RED=3,
         GREEN,
-        BLUE
+        BLUE,
+        YELLOW
     } c;
     c = GREEN;
     printf("COLOR GREEN=%d\n", c);
+    c = YELLOW;
+    printf("COLOR YELLOW=%d\n", c);
 
     //一个字节value，提供hi,lo两个按位访问的方式
     //联合的本质是共享内存空间
@@ -342,7 +346,7 @@ void chapter8_enum_bit_typedef() {
     printf("union bitfield value=%X\n", a.value);
     union _bf b;
     b.value = 0xbb;
-    b.value ^= 0xFF;
+    b.value = (b.value ^ 0xFF);
     printf("union bitfield hi=%X lo=%X\n", b.bv.hi, b.bv.lo);
 }
 
@@ -382,15 +386,15 @@ void chapter10_file() {
     //给两个结构体分别赋值
     s2.sex = 0;
     s2.nianling = 20;
-    s2.id = 1;
+    s2.id = 2;
     sprintf(s2.loc, "BEIJING");
-    sprintf(s2.name, "ZHOUXIN");
+    sprintf(s2.name, "ZHOUXIN1");
 
     s1.sex = 0;
     s1.nianling = 20;
     s1.id = 1;
     sprintf(s1.loc, "BEIJING");
-    sprintf(s1.name, "ZHOUXIN");
+    sprintf(s1.name, "ZHOUXIN2");
 
     //以二进制读写创建方式打开student.dat...
     fp = fopen("student.dat", "wb+");
