@@ -9,7 +9,6 @@ char *mystrtok(char *a, const char *del)
     {
         a = head;
     }
-    
     for (; *a; a++)
     {
         del = delptr;
