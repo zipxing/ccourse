@@ -1,5 +1,8 @@
 #include <stdio.h> 
 
+#define ISCTRL(n) (map[(n)])
+#define SETCTRL(n, bit) (map[(n)]=(bit))
+
 char * mystrtok(char * string, const char * control) {
     unsigned char *str;
     const unsigned char *ctrl = (const unsigned char *)control; 
@@ -13,9 +16,9 @@ char * mystrtok(char * string, const char * control) {
     //初始化一个256个位置的map，对应control字符的位置置1，其他位置置0
     //用于快速判断一个字符是否为control字符
     for (int count = 0; count < 256; count++) 
-        map[count] = 0;
+        SETCTRL(count, 0);
     do { 
-        map[*ctrl] = 1;
+        SETCTRL(*ctrl, 1);
     } while (*ctrl++);
  
     //首次调用str指向源字符串string，
@@ -26,7 +29,7 @@ char * mystrtok(char * string, const char * control) {
         str = (unsigned char *)nextoken;
  
     //把最前面的控制字符过滤掉
-    while(map[*str]==1 && *str)
+    while(ISCTRL(*str) && *str)
         str++;
  
     string = (char *)str;
@@ -34,7 +37,7 @@ char * mystrtok(char * string, const char * control) {
     //向后查找控制字符，如果找到就把这个位置设置为'\0'
     //这时string为这个词的首地址，str指向这个词的结尾'\0'
     for (; *str; str++)
-        if(map[*str]==1) {
+        if(ISCTRL(*str)) {
             *str++ = '\0';
             break;
         }
