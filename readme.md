@@ -49,7 +49,7 @@
 <br/><B>Android和UNIX</B>
    - 2002年Andy Rubin创立Android公司，Android系统基于Linux内核
    - 2005年google收购Android公司
-   - 2008年Android1.1发布<br/></font>
+   - 2008年Android1.1发布<br/><br/></font>
 - 现代编程语言的功能进化
 # 编程相关的周边工具和技巧
 ## 基本命令行
