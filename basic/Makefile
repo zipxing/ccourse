@@ -1,7 +1,8 @@
 CC = gcc
 CFLAGS = -Wall
+OBJS = base.o multi.o
 
-base: base.o multi.o
+base: $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 clean:
-	rm -f base.o multi.o base test.txt student.dat
+	rm -f $(OBJS) base test.txt student.dat
