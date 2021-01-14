@@ -34,7 +34,7 @@ void strip_space(char *src, char *dst) {
 }
 
 int main() {
-    char a[256] = "111    222 333   444 555    666     ";
+    char a[256] = "  111    222 333   444 555    666     ";
     char b[256];
     strip_space(a, b);
     printf("b=|%s|\n", b);
