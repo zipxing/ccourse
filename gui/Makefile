@@ -8,4 +8,4 @@ snake: snake.c
 luoxuan: luoxuangui.c
 	$(CC) $(CFLAGS) -o $@ $^
 clean:
-	rm -f $(OBJS) wave snake
+	rm -f $(OBJS) wave snake luoxuan
