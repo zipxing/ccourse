@@ -29,20 +29,20 @@ next_step(DIR d, int *x, int *y) {
         default:
             ;
     }
-    /*
-    //还有下面的写法，也经常用到，
-    //可读性稍微差一点，但代码很简洁
-    //也经常用到
-    //dnum记录对应四个方向的x，y坐标操作数
+}
+
+//next_step还有下面的写法，也经常用到，
+//可读性稍微差一点，但代码很简洁
+void
+next_step2(DIR d, int *x, int *y) {
     int dnum[4][2] = {
-        {1,  0},
-        {0,  1},
-        {-1, 0},
-        {0, -1}
+        {1,  0}, //RIGHT
+        {0,  1}, //DOWN
+        {-1, 0}, //LEFT
+        {0, -1}  //UP
     };
     *x+=dnum[d][0];
     *y+=dnum[d][1];
-    */
 }
 
 //判断是否为合法的x,y坐标
@@ -67,7 +67,7 @@ luoxuan(int n, int buf[n][n]) {
 
         //备份xy，尝试走下一步
         int bx = x, by = y;
-        next_step(d, &bx, &by);
+        next_step2(d, &bx, &by);
 
         //走出格或者碰到了已经填充过的位置则调整方向...
         if(!inbox(bx, by, n) || buf[by][bx]!=0)
@@ -80,7 +80,7 @@ luoxuan(int n, int buf[n][n]) {
 
 int
 main() {
-    int n = 6;
+    int n = 10;
     int buf[n][n];
 
     luoxuan(n, buf);

@@ -154,7 +154,6 @@ void DrawGame(void)
 
     ClearBackground(RAYWHITE);
     char strnum[4];
-    
     for (int i = 0; i < NUM; i++)
     {
         for(int j=0;j<NUM;j++)
@@ -164,7 +163,6 @@ void DrawGame(void)
             DrawText(strnum, 80 * j, 80 * i, 40, BLACK);
             }
         }
-        
     }
 
     EndDrawing();
