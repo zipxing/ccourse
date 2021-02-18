@@ -1,8 +1,9 @@
 CC = gcc
-CFLAGS = -Wall
-OBJS = hash
+CFLAGS = -Wall `pkg-config --libs --cflags raylib`
 
-hash: $(OBJS)
+wave: wave.c
+	$(CC) $(CFLAGS) -o $@ $^
+snake: snake.c
 	$(CC) $(CFLAGS) -o $@ $^
 clean:
-	rm -f $(OBJS) hash
+	rm -f $(OBJS) wave snake
