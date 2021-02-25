@@ -3,9 +3,13 @@
 #include <stdlib.h>
 
 
-//预处理之宏定义，这个是在预处理阶段执行的，原理很简单，对源码进行字符串替换
+//预处理之宏定义，这个是在预处理阶段执行的，
+//原理很简单，对源码进行字符串替换，然后再执行编译过程
 #define _PRINT_SEP_LINE_  printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
 
+//Hello,world是c语言的第一个最简单程序，
+//只在终端中打印一句话，
+//各种编程语言都有对应的helloworld程序
 void chapter1_helloworld() {
     printf("Hello, world!\n");
 }
@@ -168,7 +172,6 @@ void chapter4_array() {
 
     //注意，字符串类型变量，要多定义一个字节，用于存放结尾的0
     //char name[1000][10+1];
-
     char lfj1[10] = "abc";
     char lfj2[10] = "def";
     char fjg[20];
@@ -431,6 +434,8 @@ void chapter10_file() {
     }
 }
 
+//多个c语言文件编译成一个可执行文件的例子
+//注意multi.c中全局变量和multi.h中的变量声明
 #include "multi.h"
 void multi_file() {
     printf("global_count in multi.c = %d\n", global_count);
