@@ -1,8 +1,7 @@
 CC = gcc
-CFLAGS = -Wall
-OBJS = hash
+CFLAGS = -Wall `pkg-config --libs --cflags glib-2.0`
 
-hash: $(OBJS)
+ga: garray.c
 	$(CC) $(CFLAGS) -o $@ $^
 clean:
-	rm -f $(OBJS) hash
+	rm -f $(OBJS) ga
