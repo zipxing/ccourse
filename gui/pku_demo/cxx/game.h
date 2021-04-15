@@ -26,24 +26,30 @@ typedef struct Food {
 
 class Game {
 public:
-    static const int screenWidth = 640;
-    static const int screenHeight = 480;
+    static const int screenWidth = 800;
+    static const int screenHeight = 450;
 
-    static int framesCounter;
-    static bool gameOver;
-    static bool pause;
+    int framesCounter;
+    bool gameOver;
+    bool pause;
 
-    static Food fruit;
-    static Snake snake[SNAKE_LENGTH];
-    static Vector2 snakePosition[SNAKE_LENGTH];
-    static bool allowMove;
-    static Vector2 offset;
-    static int counterTail;
+    Food fruit;
+    Snake snake[SNAKE_LENGTH];
+    Vector2 snakePosition[SNAKE_LENGTH];
+    bool allowMove;
+    Vector2 offset;
+    int counterTail;
 
-    static Camera camera;
+    Camera camera;
 
+    Game();
+    ~Game();
 
-
-}
+    void InitGame(void);         // Initialize game
+    void UpdateGame(void);       // Update game (one frame)
+    void DrawGame(void);         // Draw game (one frame)
+    void UnloadGame(void);       // Unload game
+    void UpdateDrawFrame(void);  // Update and Draw (one frame)
+};
 
 #endif
