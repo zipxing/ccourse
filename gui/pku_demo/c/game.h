@@ -39,5 +39,6 @@ extern Vector2 offset;
 extern int counterTail;
 
 extern Camera camera;
+extern Texture2D texture;
 
 #endif

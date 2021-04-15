@@ -10,6 +10,8 @@ void InitGame(void)
     counterTail = 1;
     allowMove = false;
 
+    texture = LoadTexture("../res/bean.png");
+
     offset.x = screenWidth%SQUARE_SIZE;
     offset.y = screenHeight%SQUARE_SIZE;
 

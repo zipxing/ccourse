@@ -28,7 +28,8 @@ void DrawGame(void)
             DrawRectangleV(snake[i].position, snake[i].size, snake[i].color);
 
         //Draw fruit to pick
-        DrawRectangleV(fruit.position, fruit.size, fruit.color);
+        //DrawRectangleV(fruit.position, fruit.size, fruit.color);
+        DrawTextureEx(texture, fruit.position, 0.0, 0.12, WHITE);
 
         if (pause) 
         {

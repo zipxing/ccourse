@@ -16,3 +16,4 @@ int counterTail = 0;
 
 Camera camera = {0};
 
+Texture2D texture;
