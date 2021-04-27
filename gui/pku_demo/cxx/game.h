@@ -1,6 +1,7 @@
 #ifndef __SNAKE__
 #define __SNAKE__
 
+#include <stdio.h>
 #include "raylib.h"
 
 #if defined(PLATFORM_WEB)
@@ -27,11 +28,12 @@ typedef struct Food {
 class Game {
 public:
     static const int screenWidth = 800;
-    static const int screenHeight = 450;
+    static const int screenHeight = 600;
 
     int framesCounter;
     bool gameOver;
     bool pause;
+    bool phyInited;
 
     Food fruit;
     Snake snake[SNAKE_LENGTH];
@@ -39,6 +41,8 @@ public:
     bool allowMove;
     Vector2 offset;
     int counterTail;
+
+    Texture2D texture;
 
     Camera camera;
 

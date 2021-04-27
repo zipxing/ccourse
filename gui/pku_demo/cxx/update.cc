@@ -1,5 +1,8 @@
 #include "game.h"
 
+#define PHYSAC_IMPLEMENTATION
+#include "physac.h"
+
 //Update game per frame...
 void Game::UpdateGame(void)
 {
@@ -34,7 +37,42 @@ void Game::UpdateGame(void)
             for (int i = 0; i < counterTail; i++) 
                 snakePosition[i] = snake[i].position;
 
-            if ((framesCounter%15) == 0)
+            if ((framesCounter%90) == 0)
+            {
+                if(!phyInited)
+                {
+                    // Create floor rectangle physics body
+                    PhysicsBody floor = CreatePhysicsBodyRectangle(
+                            (Vector2){ screenWidth*0.75, screenHeight }, 360, 100, 10);
+                    // Disable body state to convert it to static
+                    floor->enabled = false;
+                    PhysicsBody circle = CreatePhysicsBodyCircle(
+                            (Vector2){ screenWidth*0.75, screenHeight/2 }, 45, 10);
+                    circle->enabled = false;
+                    phyInited = true;
+                }
+                if(framesCounter%2==0)
+                    CreatePhysicsBodyPolygon(
+                            GetMousePosition(),
+                            GetRandomValue(20, 80),
+                            GetRandomValue(3, 8),
+                            10);
+                else
+                    CreatePhysicsBodyCircle(
+                            GetMousePosition(),
+                            GetRandomValue(10, 45),
+                            10);
+                // Destroy falling physics bodies
+                int bodiesCount = GetPhysicsBodiesCount();
+                for (int i = bodiesCount - 1; i >= 0; i--)
+                {
+                    PhysicsBody body = GetPhysicsBody(i);
+                    if (body != NULL && (body->position.y > screenHeight*2))
+                        DestroyPhysicsBody(body);
+                }
+            }
+
+            if ((framesCounter%30) == 0)
             {
                 for (int i = 0; i < counterTail; i++)
                 {
@@ -49,7 +87,7 @@ void Game::UpdateGame(void)
             }
 
             //Wall behaviour
-            if (((snake[0].position.x) > (screenWidth - offset.x)) || 
+            if (((snake[0].position.x) > (screenWidth/2 - offset.x)) || 
                 ((snake[0].position.y) > (screenHeight - offset.y)) ||
                 (snake[0].position.x < 0) || (snake[0].position.y < 0))
             {
@@ -69,7 +107,7 @@ void Game::UpdateGame(void)
             {
                 fruit.active = true;
                 fruit.position = (Vector2) { 
-                    GetRandomValue(0, (screenWidth/SQUARE_SIZE) - 1)*SQUARE_SIZE + offset.x/2, 
+                    GetRandomValue(0, (screenWidth/2/SQUARE_SIZE) - 1)*SQUARE_SIZE + offset.x/2, 
                     GetRandomValue(0, (screenHeight/SQUARE_SIZE) - 1)*SQUARE_SIZE + offset.y/2 
                 };
 
@@ -79,7 +117,7 @@ void Game::UpdateGame(void)
                             (fruit.position.y == snake[i].position.y))
                     {
                         fruit.position = (Vector2){ 
-                            GetRandomValue(0, (screenWidth/SQUARE_SIZE) - 1)*SQUARE_SIZE + offset.x/2, 
+                            GetRandomValue(0, (screenWidth/2/SQUARE_SIZE) - 1)*SQUARE_SIZE + offset.x/2, 
                             GetRandomValue(0, (screenHeight/SQUARE_SIZE) - 1)*SQUARE_SIZE + offset.y/2 
                         };
                         i = 0;
@@ -105,8 +143,10 @@ void Game::UpdateGame(void)
     {
         if (IsKeyPressed(KEY_ENTER))
         {
+            ClosePhysics();
             InitGame();
             gameOver = false;
+            phyInited = false;
         }
     }
     camera.fovy = 45.0f - (framesCounter * 0.05f);

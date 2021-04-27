@@ -6,15 +6,13 @@
 int
 main(void)
 {
-    InitWindow(screenWidth, screenHeight, "sample game: snake");
+    InitWindow(screenWidth, screenHeight, 
+            "Tuyoo&PKU 48hour game development competition!");
     InitGame();
 
 #if defined(PLATFORM_WEB)
-
     emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
-
 #else
-
     SetTargetFPS(60);
 
     //Main game loop
@@ -24,11 +22,9 @@ main(void)
         UpdateGame();
         DrawGame();
     }
-
 #endif
 
     //Close window and OpenGL context
     CloseWindow();
-
     return 0;
 }

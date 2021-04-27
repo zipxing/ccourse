@@ -2,10 +2,12 @@
 
 //Global data...
 const int screenWidth = 800;
-const int screenHeight = 450;
+const int screenHeight = 600;
+
 int framesCounter = 0;
 bool gameOver = false;
 bool pause = false;
+bool phyInited = false;
 
 Food fruit = { 0 };
 Snake snake[SNAKE_LENGTH] = { 0 };

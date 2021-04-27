@@ -1,4 +1,5 @@
 #include "game.h"
+#include "physac.h"
 
 Game::Game() {
 }
@@ -9,6 +10,7 @@ void Game::InitGame(void)
     framesCounter = 0;
     gameOver = false;
     pause = false;
+    phyInited = false;
     //fruit = Food{ 0 };
     //snake[0] = { 0 };
     snakePosition[0] = { 0 };
@@ -23,6 +25,9 @@ void Game::InitGame(void)
 
     offset.x = screenWidth%SQUARE_SIZE;
     offset.y = screenHeight%SQUARE_SIZE;
+
+    //Load texture...
+    texture = LoadTexture("../res/bean.png");
 
     for (int i = 0; i < SNAKE_LENGTH; i++)
     {
@@ -49,4 +54,6 @@ void Game::InitGame(void)
     camera.up = (Vector3){0.0f, 1.0f, 0.0f};
     camera.fovy = 45.0f;
     camera.type = CAMERA_PERSPECTIVE;
+
+    InitPhysics();
 }

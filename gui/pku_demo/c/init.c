@@ -1,4 +1,5 @@
 #include "init.h"
+#include "physac.h"
 
 //Initialize game variables
 void InitGame(void)
@@ -10,9 +11,10 @@ void InitGame(void)
     counterTail = 1;
     allowMove = false;
 
+    //Load texture...
     texture = LoadTexture("../res/bean.png");
 
-    offset.x = screenWidth%SQUARE_SIZE;
+    offset.x = screenWidth/2%SQUARE_SIZE;
     offset.y = screenHeight%SQUARE_SIZE;
 
     for (int i = 0; i < SNAKE_LENGTH; i++)
@@ -21,8 +23,10 @@ void InitGame(void)
         snake[i].size = (Vector2){ SQUARE_SIZE, SQUARE_SIZE };
         snake[i].speed = (Vector2){ SQUARE_SIZE, 0 };
 
-        if (i == 0) snake[i].color = DARKBLUE;
-        else snake[i].color = BLUE;
+        if (i == 0) 
+            snake[i].color = DARKBLUE;
+        else
+            snake[i].color = BLUE;
     }
 
     for (int i = 0; i < SNAKE_LENGTH; i++)
@@ -39,4 +43,6 @@ void InitGame(void)
     camera.up = (Vector3){0.0f, 1.0f, 0.0f};
     camera.fovy = 45.0f;
     camera.type = CAMERA_PERSPECTIVE;
+
+    InitPhysics();
 }

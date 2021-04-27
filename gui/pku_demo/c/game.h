@@ -1,6 +1,8 @@
 #ifndef __SNAKE__
 #define __SNAKE__
 
+#include <stdio.h>
+
 #include "raylib.h"
 
 #if defined(PLATFORM_WEB)
@@ -30,6 +32,7 @@ extern const int screenHeight;
 extern int framesCounter;
 extern bool gameOver;
 extern bool pause;
+extern bool phyInited;
 
 extern Food fruit;
 extern Snake snake[SNAKE_LENGTH];
